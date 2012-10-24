@@ -7,7 +7,6 @@ How to
 ------
 
 ```php
-
 #!/usr/bin/env php
 <?
 require 'CliParamsAbstraction.php';
@@ -19,13 +18,14 @@ class ExampleProgram implements CliProgram {
 	public static function main($args) {
 		print "Hello, Command Line World!";
 
+		$togo = '';
 		if ( isset( $args['to-go'] ) ) {
 			$togo = " to go..";
 		}
 
 		$potato = $args['potato'];
 
-		print PHP_EOL . "You asked for {$potato} potatoes{$togo}.";
+		print PHP_EOL . "You asked for {$potato} potatoes{$togo}." . PHP_EOL;
 	}
 
 }
@@ -41,10 +41,12 @@ try {
 So, if you ask in CLI:
 
 ```shell
-
 $ example-program -p roasted --to-go
 ```
 
 You would have:
 
-`You asked for roasted potatoes to go...`
+```
+Hello, Command Line World!
+You asked for roasted potatoes to go...
+```
