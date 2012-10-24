@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?
+require 'CliParamsAbstraction.php';
+
+class ExampleProgram implements CliProgram {
+	public static function main($args) {
+		print "hey";
+	}
+}
+
+// Must be in your code
+try {
+	CliParamsAbstraction::init('ExampleProgram', $argv, array( 'a' => 'azedo', 'batata' ) );
+} catch (Exception $e) {
+	print "Error: " . $e->getMessage();
+}
