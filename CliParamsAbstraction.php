@@ -2,29 +2,53 @@
 
 class CliParamsAbstraction {
 	public static function init($class, $params, $defaultParams = array() ) {
-		// Retirando o nome do programa, caso seja necessário utilizar futuramente, só armazenar o retorno numa variável
+		// Taking the program's name off
 		array_shift( $params );
 
-		if ( empty( $defaultParams ) ) {
-			$class::main( array() );
-		} else {
-			$paramsArray = array();
+		if ( ! empty( $defaultParams ) ) {
+
+			$tempArray = array();
 
 			for ($i=0; $i<count($params); $i++) {
-				if ( strpos( $params[$i], "--") !== false ) {
-					print "param: ";
-				} else if ( strpos( $params[$i], "-") !== false ) {
-					$param = self::getParam( $params[$i], $defaultParams );
-					if ( $param !== false ) {
-						print "shorthand (to {$param}): ";
-					} else {
-						throw new UnregisteredParamShorthandException();
-					}
-				} else {
-					print "value: ";
-				}
-				print $params[$i].PHP_EOL;
+
+				$value = self::is( $params[$i] ) != 'value' ? self::getParam( $params[$i], $defaultParams ) : $params[$i];
+				$type = self::is( $params[$i] );
+				
+				$tempArray += array( $type => $value );
 			}
+		}
+
+		return $class::main( self::postFix( $tempArray ) );
+	}
+
+	private static function postFix($tempArray) {
+		$postFix = array();
+
+		$parameters = array();
+		$values = array();
+
+		foreach ($tempArray as $type => $value) {
+			if ( $type == 'value' ) {
+				array_push($values, $value);
+			} else {
+				array_push($parameters, $value);
+			}
+		}
+
+		foreach ($parameters as $i => $param) {
+			$postFix[$param] = isset( $values[$i] ) ? $values[$i] : '' ;
+		}
+
+		return $postFix;
+	}
+
+	private static function is( $arg ) {
+		if (strpos( $arg, "--") !== false) {
+			return 'param';
+		} else if ( strpos( $arg, "-") !== false ) {
+			return 'shorthand';
+		} else {
+			return 'value';
 		}
 	}
 
