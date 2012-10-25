@@ -4,7 +4,7 @@ require '../CLIAbstraction.php';
 
 class ExampleProgram implements CliProgram {
 
-	static function main($args) {
+	public static function main($args) {
 		$togo = '';
 
 		// Use it as key-valued arrays
