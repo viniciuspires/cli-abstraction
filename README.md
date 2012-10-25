@@ -3,6 +3,43 @@ CLIA: Command Line Interface Abstraction
 
 CLIA is a PHP Command Line Interface abstraction for short initialization.
 
+
+Why?
+----
+
+Have you ever dreamed of this (instead of `$argv[0]` __hell__)?
+
+```php
+<? require 'CLIAbstraction.php';
+
+class MyProgram implements CliProgram {
+	public static function main($args) {
+		print "Hey, " . $args['user'];
+	}
+
+	public static function getParams() {
+		return array( 'u' => 'user' );
+	}
+}
+
+run();
+```
+
+Running your PHP code like this?
+
+```shell
+$ my-program -u LoremIpsum
+```
+
+And having this in command-line?
+
+```
+Hey, LoremIpsum
+```
+
+Well... at least I did.
+
+
 How to
 ------
 
@@ -20,7 +57,7 @@ Take a look at the code below for enlightenment:
 ```php
 #!/usr/bin/env php
 <?
-require 'CliParamsAbstraction.php';
+require 'CLIAbstraction.php';
 
 class ExampleProgram implements CliProgram {
 
