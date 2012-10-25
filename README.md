@@ -1,52 +1,63 @@
-CliParamsAbstraction
-====================
+CLIA: Command Line Interface Abstraction
+================================================
 
-A PHP Command Line Interface abstraction. (Still a work-in-progress)
+CLIA is a PHP Command Line Interface abstraction for short initialization.
 
 How to
 ------
+
+Your program must have:
+
+* A class with the same name of the file;
+* File (program) must be dasherized, that is, `lowercase-dash-separated-words`;
+* Class must be `CamelCasedLikeThis`, with the same name as the file;
+* Your program class, must be a Subclass of `CliProgram`;
+
+
+Take a look at the code below for enlightenment:
+
 
 ```php
 #!/usr/bin/env php
 <?
 require 'CliParamsAbstraction.php';
 
-// Declare your own class, that implements the CliProgram interface
 class ExampleProgram implements CliProgram {
 
-	// This is the method that must be implemented, I mean, your program.
 	public static function main($args) {
-		print "Hello, Command Line World!";
-
 		$togo = '';
+
+		// Use it as key-valued arrays
 		if ( isset( $args['to-go'] ) ) {
 			$togo = " to go..";
 		}
 
 		$potato = $args['potato'];
 
-		print PHP_EOL . "You asked for {$potato} potatoes{$togo}." . PHP_EOL;
+		print "You asked for {$potato} potatoes{$togo}.";
 	}
 
+	// This are your params configurations: keys for shorthands, values for params
+	public static function getParams() {
+		return array( 'p' => 'potato', 'to-go' );
+	}
 }
 
-// Must be in your code
-try {
-	CliParamsAbstraction::init('ExampleProgram', $argv, array( 'p' => 'potato', 'to-go' ) );
-} catch (Exception $e) {
-	print "Error: " . $e->getMessage();
-}
+// Black magic
+run();
 ```
 
-So, if you ask in CLI:
+So, if you ask in the command-line (don't forget to `chmod +x example-program`):
+
 
 ```shell
-$ example-program -p roasted --to-go
+$ ./example-program -p roasted --to-go
 ```
 
 You would have:
 
 ```
-Hello, Command Line World!
 You asked for roasted potatoes to go...
 ```
+
+> That's all, folks!

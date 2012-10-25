@@ -1,25 +1,27 @@
 #!/usr/bin/env php
 <?
-require '../CliParamsAbstraction.php';
+require '../CLIAbstraction.php';
 
 class ExampleProgram implements CliProgram {
-	public static function main($args) {
-		print "Hello, Command Line World!";
 
+	static function main($args) {
 		$togo = '';
+
+		// Use it as key-valued arrays
 		if ( isset( $args['to-go'] ) ) {
-            $togo = " to go..";
-        }
+			$togo = " to go..";
+		}
 
-        $potato = $args['potato'];
+		$potato = $args['potato'];
 
-        print PHP_EOL . "You asked for {$potato} potatoes{$togo}." . PHP_EOL;
+		print "You asked for {$potato} potatoes{$togo}.";
+	}
+
+	// This are your params configurations: keys for shorthands, values for params
+	public static function getParams() {
+		return array( 'p' => 'potato', 'to-go' );
 	}
 }
 
-// Must be in your code
-try {
-	CliParamsAbstraction::init('ExampleProgram', $argv, array( 'p' => 'potato', 'to-go' ) );
-} catch (Exception $e) {
-	print "Error: " . $e->getMessage();
-}
+// Black magic
+run();
