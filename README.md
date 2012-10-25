@@ -40,8 +40,8 @@ Hey, LoremIpsum
 Well... at least I did.
 
 
-How to
-------
+How?
+----
 
 Your program must have:
 
